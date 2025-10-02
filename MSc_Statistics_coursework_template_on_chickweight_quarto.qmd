@@ -75,7 +75,25 @@ In the following figure we plot the weight changes corresponding to the increase
 #| fig-cap: "weight changes corresponding to the increases of time"
 plot(x = chickweight$Time, y = chickweight$weight)
 ```
-
+```{r echo=FALSE}
+#| label: fig-2
+#| fig-cap: "Relation between weight and time dividing into different type of diet."
+plot(
+  x = chickweight$Time, 
+  y = chickweight$weight,
+  main = "Chick weight changes with time in different diet choices",
+  xlab = "Time(day)",
+  ylab = "Weight(gm)",
+  pch = 15 + as.numeric(chickweight$Diet),
+  col = chickweight$Diet,
+  sub = "Data source: ChickWeight")
+legend(
+  "topleft",
+  title = "Diet type",
+  legend = c("1", "2", "3","4"),
+  pch = 16:19,
+  col = 1:4)
+```
 
 **Part c.**  We shall use the samples to compute the empirical cdf for the values $x = 0.5, 1, 10$.  
 
