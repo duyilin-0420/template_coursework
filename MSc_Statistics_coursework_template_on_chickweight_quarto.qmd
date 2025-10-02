@@ -39,76 +39,36 @@ require(kableExtra)
 # Put any library imports and other preamble here.
 ```
 
-This Rmarkdown document is intended to provide a basic template that you may use throughout the course, and to introduce you to basic functionality of the open-source bookdown R package for writing Rmarkdown documents [@xie2016bookdown].
 
-Please note:
+# Basic Report about ChickWeight Dataset.(Table & Figure & Labels...)
 
-- Rmarkdown syntax for the title and document style;
-- bookdown syntax to label and reference equations;
-- bookdown syntax to referencing literate and provide a bib file;
-- kable syntax to build clean and clear tables that can be referenced;
-- Rmarkdown inline functions to collect and print all code used.
+In this chapter we seek to generate some useful visual information about the ChickWeight Dataset
 
-# Sampling from the Cauchy distribution
+**Part a. Load the ChickWeight Dataset**  
 
-In this question we seek to generate samples from the standard Cauchy distribution, with pdf given by
-$$
-  p(x) = \frac{1}{\pi (1 + x^2)}, \quad x \in \mathbb{R}.
-$${#eq-1}
-The cdf associated with @eq-1 is given by
-$$
-  F(x) = \frac{1}{\pi}\arctan(x) + \frac{1}{2}.
-$${#eq-2}
+The chickweight is an inbuilt dataset in R. So we can use what we have learned before to load it by using "::"
+```{r}
+chickweight <- datasets::ChickWeight
+```
+Use "?ChickWeight" in concole to get some basic information about this dataset. Like the Description, Format, Details, Examples, etc. And we know the ChickWeight data frame has 578 rows and 4 columns from an experiment on the effect of diet on early growth of chicks' weight. 
 
-**Part a.**  We apply the inversion method as described by @graham2013stochastic. We first compute the generalised inverse of the cdf @eq-2.  To this end, let $y\in [0,1]$, then
 
-$$
-\begin{align}
-    y &= F(x) \quad \iff \\
-    y &= \frac{1}{\pi}\arctan(x) + \frac{1}{2} \quad \iff \\
-    y-\frac{1}{2}  &= \frac{1}{\pi}\arctan(x)  \quad \iff \\
-    \pi\left(y-\frac{1}{2}\right)  &= \arctan(x)  \quad \iff \\
-    x &= \tan\left(\pi\left(y-\frac{1}{2}\right)\right). 
-\end{align}
-$${#eq-3a}
-By the inversion method [@graham2013stochastic], if $Y \sim U[0,1]$
-$$
-  X = \tan\left(\pi\left(Y-\frac{1}{2}\right)\right),
-$${#eq-4}
-
-```{r, echo=FALSE}
-
-### Question 1a
-
-generate_cauchy_samples <- function(n) {
-  # Generate 'n' uniform random numbers between 0 and 1
-  u <- runif(n)
-  
-  # Apply the inverse CDF formula to get Cauchy samples
-  samples <- tan(pi * (u - 0.5))  
-  return(samples)
-}
-
-num_samples = 1000
-
-# Generate samples from the standard Cauchy distribution
-cauchy_samples <- generate_cauchy_samples(num_samples)
-
+**Part b. Tables and nicer Tables**   
+How many chicks of each diet type do we have?
+```{r}
+table(chickweight$Diet)
+```
+We can create one nicer table showing the type of diet and the count clearly, and provide one label to it to reference later. See below @tbl-chickweight.
+```{r}
+#| label: tbl-chickweight
+#| tbl-cap: "amount of chicks of each diet type"
+diet_type_counts <- table(chickweight$Diet)
+knitr::kable(diet_type_counts, col.names = c("Diet Type", "Count"))
 ```
 
+**Part c. Figures**
 
-**Part b.**   The empirical cdf based on $N$ samples $x_1, \ldots, x_N$ is defined to be
-              $$
-                \widehat{F}(t) = \frac{1}{N}\sum_{i = 1}^N \mathbf{1}[x_i \leq t], \quad x\in \mathbb{t}.
-              $$
-To generate the empirical cdf in R, we perform the following steps:
-            
-a. Generate $N$ samples from the distribution using the inversion method, as detailed in the previous question.  
-b. Sort the samples in ascending order $x_1 \leq x_2 \leq x_3 \leq \ldots \leq x_N$.
-c. The empirical CDF at value $x_i$ is given by $i/N$.  
-
-
-In the following figure we plot the empirical cdf based on 1000 samples (black line), and compare against the analytical cdf (red line).  
+In the following figure we plot the weight changes corresponding to the increases of time (See @fig-1). And also we add the categories on each diet on this plot (See @fig-2).
 
 ```{r echo=FALSE}
 
