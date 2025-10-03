@@ -46,7 +46,7 @@ In this chapter we seek to generate some useful visual information about the Chi
 
 **Part a. Load the ChickWeight Dataset**  
 
-The chickweight is an inbuilt dataset in R. So we can use what we have learned before to load it by using "::"
+The chickweight is an inbuilt dataset in R.[@RdatasetsChickWeight] So we can use what we have learned before to load it by using "::"
 ```{r}
 chickweight <- datasets::ChickWeight
 ```
@@ -94,13 +94,6 @@ legend(
   pch = 16:19,
   col = 1:4)
 ```
-
-**Part c.**  We shall use the samples to compute the empirical cdf for the values $x = 0.5, 1, 10$.  
-
-```{r}
-
-```
-
 
 # Code appendix
 
